@@ -18,6 +18,7 @@ tap 'espanso/espanso'
 tap 'jesseduffield/lazygit'
 tap 'koekeishiya/formulae'
 tap 'kdash-rs/kdash'
+tap 'nwithan8/tap'
 
 #############################################################
 # Command Line                                              #
@@ -82,6 +83,7 @@ brew 'newsboat'     # RSS / ATOM reader
 brew 'pass'         # Password store
 brew 'rclone'       # Manage cloud storage
 brew 'task'         # Todo + task management
+brew 'pcopy'        # copy/paste across machines
 
 # CLI Development Suits
 brew 'httpie'       # HTTP / API testing testing client
