@@ -117,7 +117,32 @@ debian_apps=(
    'tree'                   # Affichage des répertoires sous forme d'arborescence.
    'tokei'                  # Compte les lignes de code.
    'trash-cli'              # Gestion des fichiers supprimés.
-   'xsel
+   'xsel'                   # Accès au presse-papiers X.
+   'zoxide'                 # Navigation auto-apprise.
+
+   # Sécurité
+   'clamav'                 # Suite antivirus open source.
+   'cryptsetup'             # Gestion des volumes cryptés.
+   'gnupg'                  # Chiffrement PGP, signature et vérification.
+   'git-crypt'              # Cryptage transparent pour les dépôts git.
+   'lynis'                  # Analyse du système pour détecter des problèmes de sécurité.
+   'openssl'                # Toolkit de cryptographie et SSL/TLS.
+   'rkhunter'               # Détection de rootkits et d'autres menaces.
+
+   # Monitoring, gestion et statistiques
+   'btop'                   # Surveillance des ressources système.
+   'bmon'                   # Moniteur d'utilisation de bande passante.
+   'ctop'                   # Surveillance des conteneurs.
+   'gping'                  # Outil interactif de ping avec graphique.
+   'glances'                # Moniteur de ressources avec interface web et API.
+   'goaccess'               # Analyseur et visualiseur de logs web.
+   'speedtest-cli'          # Outil de test de vitesse de connexion en ligne de commande.
+
+   # CLI Fun
+   'cowsay'                 # Affiche des messages avec une vache ASCII.
+   'figlet'                 # Affiche du texte en art ASCII 3D.
+   'lolcat'                 # Sortie en couleur arc-en-ciel dans le terminal.
+)
 
 
 ubuntu_repos=(
