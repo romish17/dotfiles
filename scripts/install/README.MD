@@ -14,4 +14,4 @@ Avant d'exécuter le script, assurez-vous que vous avez les prérequis suivants 
 Pour installer les paquets définis dans le script, exécutez la commande suivante dans votre terminal :
 
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/romish17/install/main/scripts/install/debian-apt.sh)
+bash <(wget -qO- https://s.romish.cloud/s/b)
