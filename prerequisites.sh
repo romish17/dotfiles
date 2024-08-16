@@ -7,8 +7,9 @@
 # List of apps to install
 core_packages=(
   'git' # Needed to fetch dotfiles
-  'vim' # Needed to edit files
+  'nano' # Needed to edit files
   'zsh' # Needed as bash is crap
+  'curl'
 )
 
 # Color variables
