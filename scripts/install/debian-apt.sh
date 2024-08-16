@@ -12,7 +12,7 @@ debian_apps=(
    'psmisc'                 # Collection d'outils système, dont 'killall' pour gérer les processus.
    'openbox'                # Gestionnaire de fenêtres léger et configurable.
    'lxterminal'             # Émulateur de terminal léger pour le bureau LXDE.
-   'sddm'                   # Gestionnaire de sessions graphique pour l'authentification et le démarrage des sessions X.
+   'lightdm'                # Gestionnaire de sessions graphique pour l'authentification et le démarrage des sessions X.
    'compton'                # Compositeur de fenêtres pour ajouter des effets comme la transparence et les ombres.
    'jgmenu'                 # Menu léger pour le clic droit, souvent utilisé avec Openbox.
 
