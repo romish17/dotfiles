@@ -6,68 +6,119 @@
 
 # Apps to be installed via apt-get
 debian_apps=(
-  # Essentials
-  'git'           # Version controll
-  'neovim'        # Text editor
-  'ranger'        # Directory browser
-  'tmux'          # Term multiplexer
-  'wget'          # Download files
-  'zsh'           # Shell of choice
+   # Système X et gestion de fenêtre
+   'xserver-xorg-core'     # Composant central du serveur X, responsable de la gestion de l'affichage.
+   'x11-xserver-utils'      # Ensemble d'utilitaires pour la configuration et le contrôle du serveur X.
+   'psmisc'                 # Collection d'outils système, dont 'killall' pour gérer les processus.
+   'openbox'                # Gestionnaire de fenêtres léger et configurable.
+   'lxterminal'             # Émulateur de terminal léger pour le bureau LXDE.
+   'sddm'                   # Gestionnaire de sessions graphique pour l'authentification et le démarrage des sessions X.
+   'compton'                # Compositeur de fenêtres pour ajouter des effets comme la transparence et les ombres.
+   'jgmenu'                 # Menu léger pour le clic droit, souvent utilisé avec Openbox.
 
-  # CLI Power Basics
-  'aria2'         # Resuming download util (better wget)
-  'bat'           # Output highlighting (better cat)
-  'broot'         # Interactive directory navigation
-  'ctags'         # Indexing of file info + headers
-  'diff-so-fancy' # Readable file compares (better diff)
-  'duf'           # Get info on mounted disks (better df)
-  'exa'           # Listing files with info (better ls)
-  'fzf'           # Fuzzy file finder and filtering
-  'hyperfine'     # Benchmarking for arbitrary commands
-  'just'          # Powerful command runner (better make)
-  'jq'            # JSON parser, output and query files
-  'most'          # Multi-window scroll pager (better less)
-  'procs'         # Advanced process viewer (better ps)
-  'ripgrep'       # Searching within files (better grep)
-  'scrot'         # Screenshots programmatically via CLI
-  'sd'            # RegEx find and replace (better sed)
-  'thefuck'       # Auto-correct miss-typed commands
-  'tealdeer'      # Reader for command docs (better man)
-  'tree'          # Directory listings as tree structure
-  'tokei'         # Count lines of code (better cloc)
-  'trash-cli'     # Record and restore removed files
-  'xsel'          # Copy paste access to the X clipboard
-  'zoxide'        # Auto-learning navigation (better cd)
+   # Gestionnaire de session et services de bureau
+   'nitrogen'               # Outil pour définir des fonds d'écran sur les environnements de bureau.
+   'dunst'                  # Gestionnaire de notifications léger et personnalisable.
+   'tint2'                  # Barre des tâches et de notification légère.
+   'picom'                  # Compositeur pour les effets visuels comme la transparence et les ombres (successeur de Compton).
+   'xsettingsd'             # Démon léger pour gérer les paramètres X11, souvent utilisé pour GTK.
+   'xss-lock'               # Utilitaire pour verrouiller l'écran après un certain temps d'inactivité.
+   'unclutter'              # Outil pour cacher automatiquement le curseur de la souris lorsqu'il est inactif.
+   'feh'                    # Visionneuse d'images rapide et simple, souvent utilisée pour gérer les fonds d'écran.
+   'lxappearance'           # Outil pour configurer l'apparence des thèmes GTK et des icônes.
+   'udiskie'                # Gestionnaire de périphériques de stockage, utile pour le montage automatique.
+   'xfce4-power-manager'    # Gestionnaire de l'alimentation pour XFCE, utile pour gérer l'énergie sur des machines portables.
 
-  # Languages, compilers, runtimes, etc
-  'golang'
-  'nodejs'
-  'npm'
+   # Audio
+   'pulseaudio'             # Serveur de son qui permet la gestion de l'audio sur le système.
+   'mpd'                    # Démon de lecture audio pour gérer et lire de la musique.
+   'mpc'                    # Client léger pour interagir avec MPD via la ligne de commande.
+   'ncmpcpp'                # Interface en ligne de commande pour MPD, très personnalisable.
+   'pavucontrol'            # Interface graphique pour contrôler le volume de Pulseaudio.
+   'alsa-utils'             # Outils pour gérer les périphériques audio via ALSA (Advanced Linux Sound Architecture).
 
-  # Security Utilities
-  'clamav'        # Open source virus scanning suite
-  'cryptsetup'    # Reading / writing encrypted volumes
-  'gnupg'         # PGP encryption, signing and verifying
-  'git-crypt'     # Transparent encryption for git repos
-  'lynis'         # Scan system for common security issues
-  'openssl'       # Cryptography and SSL/TLS Toolkit
-  'rkhunter'      # Search / detect potential root kits
+   # Outils et utilitaires
+   'brightnessctl'          # Utilitaire en ligne de commande pour contrôler la luminosité de l'écran.
+   'imagemagick'            # Ensemble d'outils pour la manipulation d'images en ligne de commande.
+   'scrot'                  # Outil de capture d'écran en ligne de commande.
+   'w3m-img'                # Module de w3m pour afficher des images dans le terminal.
+   'wireless-tools'         # Ensemble d'outils pour configurer et contrôler les connexions sans fil.
+   'xclip'                  # Utilitaire en ligne de commande pour manipuler le presse-papiers X11.
+   'parcellite'             # Gestionnaire de presse-papiers léger.
+   'gsimplecal'             # Calendrier simple et léger pour la barre des tâches.
+   'neofetch'               # Outil pour afficher des informations système de manière esthétique dans le terminal.
+   'sudo'                   # Permet aux utilisateurs d'exécuter des commandes avec les privilèges d'un autre utilisateur.
+   'python3-xdg'            # Implémentation Python des spécifications XDG (X Desktop Group).
+   'btop'                   # Outil de surveillance des ressources système, successeur de bashtop.
+   'htop'                   # Outil interactif en ligne de commande pour la surveillance des processus.
+   'zsh'                    # Shell puissant et très personnalisable, souvent utilisé comme alternative à bash.
+   'build-essential'        # Ensemble d'outils pour compiler des logiciels, incluant GCC, make, etc.
+   'dkms'                   # Infrastructure pour construire et installer automatiquement des modules de noyau.
+   'linux-headers-$(uname -r)' # En-têtes de noyau nécessaires pour compiler des modules du noyau.
+   'aria2'                  # Utilitaire de téléchargement avec reprise de téléchargement (meilleur que wget).
+   'bat'                    # Affichage avec syntaxe colorée (meilleur que cat).
+   'broot'                  # Navigation interactive dans les répertoires.
+   'ctags'                  # Indexation des informations de fichiers et des en-têtes.
+   'diff-so-fancy'          # Comparaison de fichiers lisible (meilleur que diff).
+   'duf'                    # Informations sur les disques montés (meilleur que df).
+   'exa'                    # Liste les fichiers avec des informations (meilleur que ls).
+   'fzf'                    # Trouve et filtre des fichiers de manière floue.
+   'hyperfine'              # Benchmarking pour des commandes arbitraires.
+   'just'                   # Exécution de commandes puissantes (meilleur que make).
+   'jq'                     # Analyseur JSON, sortie et requêtes de fichiers.
+   'most'                   # Pager multi-fenêtres (meilleur que less).
+   'procs'                  # Visualiseur de processus avancé (meilleur que ps).
+   'ripgrep'                # Recherche dans les fichiers (meilleur que grep).
+   'sd'                     # Trouver et remplacer avec Regex (meilleur que sed).
+   'thefuck'                # Correction automatique des commandes mal tapées.
+   'tealdeer'               # Lecteur de documentation de commandes (meilleur que man).
+   'tree'                   # Affichage des répertoires sous forme d'arborescence.
+   'tokei'                  # Compte les lignes de code (meilleur que cloc).
+   'trash-cli'              # Gestion des fichiers supprimés, restauration et enregistrement.
+   'xsel'                   # Accès au presse-papiers X.
+   'zoxide'                 # Navigation auto-apprise (meilleur que cd).
 
-  # Monitoring, management and stats
-  'btop'          # Live system resource monitoring
-  'bmon'          # Bandwidth utilization monitor
-  'ctop'          # Container metrics and monitoring
-  'gping'         # Interactive ping tool, with graph
-  'glances'       # Resource monitor + web and API
-  'goaccess'      # Web log analyzer and viewer
-  'speedtest-cli' # Command line speed test utility
+   # Applications
+   'rofi'                   # Lanceur d'applications et menu texte, très personnalisable.
+   'rxvt-unicode'           # Émulateur de terminal léger avec support des polices Unicode.
+   'thunar'                 # Gestionnaire de fichiers léger pour XFCE.
+   'thunar-archive-plugin'  # Plugin pour Thunar pour gérer les archives compressées.
+   'thunar-volman'          # Plugin pour Thunar pour gérer automatiquement les périphériques amovibles.
+   'ffmpegthumbnailer'      # Générateur de vignettes vidéo léger basé sur ffmpeg.
+   'tumbler'                # Service de création de miniatures pour divers formats de fichiers.
+   'geany'                  # Éditeur de texte léger avec des fonctionnalités IDE.
+   'geany-plugins'          # Ensemble de plugins pour étendre les fonctionnalités de Geany.
+   'gimp'                   # Éditeur d'images puissant et open-source.
+   'inkscape'               # Logiciel de dessin vectoriel open-source.
+   'mpv'                    # Lecteur multimédia léger et très configurable.
+   'viewnior'               # Visionneuse d'images rapide et simple.
+   'git'                    # Système de gestion de versions distribué.
+   'neovim'                 # Éditeur de texte extensible et configurable.
+   'ranger'                 # Navigateur de répertoires dans le terminal.
+   'tmux'                   # Multiplexeur de terminaux.
+   'wget'                   # Téléchargeur de fichiers via HTTP, HTTPS et FTP.
+   'aria2'                  # Utilitaire de téléchargement avec reprise de téléchargement.
+   'bat'                    # Affichage de fichiers avec syntaxe colorée.
+   'broot'                  # Navigation interactive dans les répertoires.
+   'ctags'                  # Indexation des informations de fichiers et des en-têtes.
+   'diff-so-fancy'          # Comparaison de fichiers lisible.
+   'duf'                    # Informations sur les disques montés.
+   'exa'                    # Liste les fichiers avec des informations.
+   'fzf'                    # Trouve et filtre des fichiers de manière floue.
+   'hyperfine'              # Benchmarking pour des commandes.
+   'just'                   # Exécution de commandes puissantes.
+   'jq'                     # Analyseur JSON.
+   'most'                   # Pager multi-fenêtres.
+   'procs'                  # Visualiseur de processus avancé.
+   'ripgrep'                # Recherche dans les fichiers.
+   'sd'                     # Trouver et remplacer avec Regex.
+   'thefuck'                # Correction automatique des commandes mal tapées.
+   'tealdeer'               # Lecteur de documentation de commandes.
+   'tree'                   # Affichage des répertoires sous forme d'arborescence.
+   'tokei'                  # Compte les lignes de code.
+   'trash-cli'              # Gestion des fichiers supprimés.
+   'xsel
 
-  # CLI Fun
-  'cowsay'        # Outputs message with ASCII art cow
-  'figlet'        # Outputs text as 3D ASCII word art
-  'lolcat'        # Rainbow colored terminal output
-  'neofetch'      # Show off distro and system info
-)
 
 ubuntu_repos=(
   'main'

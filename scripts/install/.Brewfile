@@ -230,5 +230,6 @@ brew 'yabai'          # Tiling window manager
 cask 'coteditor'      # Just a simple plain-text editor
 cask 'little-snitch'  # Firewall app viewing / blocking traffic
 cask 'keka'           # File archiver and extractor
+brew 'cirruslabs/cli/tart' # Virtualisation MacOS Apple Silicon
 
 # EOF
