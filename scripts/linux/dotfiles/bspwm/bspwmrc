@@ -6,6 +6,9 @@ compton --backend glx --vsync opengl-swc &
 
 polybar -c ~/.config/polybar/config.ini &
 
+# exec --no-startup-id feh --bg-scale ~/.config/wallpapers/starfield2.jpg &
+feh --bg-scale ~/.config/wallpapers/starfield2.jpg &
+
 bspc monitor -d I II
 
 bspc config border_width         2

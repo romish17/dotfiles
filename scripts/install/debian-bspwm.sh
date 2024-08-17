@@ -15,5 +15,8 @@ mkdir -p ~/.config/{bspwm,sxhkd,polybar}
 cp ../linux/dotfiles/bspwm/bspwmrc ~/.config/bspwm/
 cp ../linux/dotfiles/sxhkd/sxhkdrc ~/.config/sxhkd/
 cp ../linux/dotfiles/polybar/polybar.ini ~/.config/polybar/
+cp -r ../../custom/wallpapers/ ~/.config/wallpapers/
+tar -xzf ../../custom/icons/Nordzy.tar.gz -C /usr/share/icons/Nordzy/
+unzip ../../custom/themes/Nordic-master.zip -d /usr/share/themes/Nordic/
 sudo chmod u+x ~/.config/bspwm/bspwmrc
 
