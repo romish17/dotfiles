@@ -4,24 +4,31 @@
 # Core Dependency Install Script                                     #
 ######################################################################
 
+# Color variables
+LIGHTGREEN='\033[1;32m'
+YELLOW='\033[0;93m'
+RED='\033[0;31m'
+LIGHT='\033[2;32m'
+RESET='\033[0m'
+
+if [ "$EUID" -ne 0 ]; then
+    echo -e "${RED}You are not root.\n"\
+    "Please start this script with root privileges.${RESET}"
+    exit 1
+fi
+
 # List of apps to install
 core_packages=(
   'git' # Needed to fetch dotfiles
   'nano' # Needed to edit files
   'zsh' # Needed as bash is crap
   'curl'
+  'sudo'
 )
-
-# Color variables
-LIGHTGREEN='\033[1;32m'
-YELLOW='\033[0;93m'
-LIGHT='\033[2;32m'
-RESET='\033[0m'
 
 # Shows help menu / introduction
 function print_usage () {
   echo -e "${LIGHTGREEN}Prerequisite Dependency Installation Script${LIGHT}\n"\
-  "There's a few packages that are needed in order to continue with setting up dotfiles.\n"\
   "This script will detect distro and use appropriate package manager to install apps.\n"\
   "Elavated permissions may be required. Ensure you've read the script before proceeding."\
   "\n${RESET}"
@@ -66,7 +73,7 @@ if [[ $* == *"--help"* ]]; then exit; fi
 
 # Ask user if they'd like to proceed
 if [[ ! $* == *"--auto-yes"* ]] ; then
-  echo -e "${LIGHTGREEN}Are you happy to continue? (y/N)${RESET}"
+  echo -e "${LIGHTGREEN}Are you ready ? (y/N)${RESET}"
   read -t 15 -n 1 -r
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -83,6 +90,11 @@ for app in ${core_packages[@]}; do
     echo -e "${YELLOW}${app} is already installed, skipping${RESET}"
   fi
 done
+
+echo 'Admin username to add to sudoers: '
+read useradmin
+usermod -aG sudo $useradmin
+echo "$useradmin  ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # All done
 echo -e "\n${LIGHTGREEN}Jobs complete, exiting${RESET}"
