@@ -11,7 +11,7 @@ sudo apt install xorg bspwm sxhkd polybar compton rofi dunst nitrogen i3lock red
 # btop conf
 # htop conf
 
-cd ~/.config/ && mkdir -p bspwm sxhkd polybar
+mkdir -p ~/.config/{bspwm,sxhkd,polybar}
 cp ../linux/dotfiles/bspwm/bspwmrc ~/.config/bspwm/
 cp ../linux/dotfiles/sxhkd/sxhkdrc ~/.config/sxhkd/
 cp ../linux/dotfiles/polybar/polybar.ini ~/.config/polybar/
