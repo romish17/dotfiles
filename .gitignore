@@ -80,3 +80,6 @@ Sessionx.vim
 .netrwhist
 tags
 [._]*.un~
+
+# SSH Key
+id_rsa*
