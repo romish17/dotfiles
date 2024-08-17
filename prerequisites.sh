@@ -36,7 +36,7 @@ function print_usage () {
 
 function install_debian () {
   echo -e "${LIGHTGREEN}Installing ${1} via apt-get${RESET}"
-  sudo apt install $1
+  sudo apt install $1 -y -qq > /dev/null 2>&1
 }
 function install_arch () {
   echo -e "${LIGHTGREEN}Installing ${1} via Pacman${RESET}"
@@ -60,7 +60,7 @@ function multi_system_install () {
     install_mac $app # MacOS via Homebrew
   elif [ -f "/etc/arch-release" ] && hash pacman 2> /dev/null; then 
     install_arch $app # Arch Linux via Pacman
-  elif ! [ -f "/etc/debian_version" ] && hash apt 2> /dev/null; then
+  elif [ -f "/etc/debian_version" ] && hash apt 2> /dev/null; then
     install_debian $app # Debian via apt-get
   else
     echo -e "${YELLOW}Skipping ${app}, as couldn't detect system type ${RESET}"
