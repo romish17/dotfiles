@@ -155,6 +155,7 @@ ubuntu_repos=(
 debian_repos=(
   'main'
   'contrib'
+  'non-free'
 )
 
 # Following packages not found by apt, need to fix:

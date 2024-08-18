@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+# Add contrib & non-free repos
+sed -i 's/^deb \(\S*\) \(.*\) main/deb \1 \2 main contrib non-free/' /etc/apt/sources.list
+
 sudo apt update && apt upgrade -yy
-sudo apt install xorg bspwm sxhkd polybar compton rofi dunst nitrogen i3lock redshift cmus ranger kitty alacritty thunar unzip -yy
+sudo apt install xorg bspwm sxhkd polybar compton rofi dunst nitrogen i3lock redshift cmus ranger kitty alacritty thunar unzip psmisc pulseaudio -yy
 
 # bspwm conf -> ok
 # sxhkdrc conf -> ok
@@ -21,8 +24,10 @@ cp ../linux/dotfiles/polybar/config.ini ~/.config/polybar/
 cp ../linux/dotfiles/compton.conf ~/.config/compton/compton.conf
 
 cp -r ../../custom/wallpapers/ ~/.config/wallpapers/
-tar -xzf ../../custom/icons/Nordzy.tar.gz -C /usr/share/icons/Nordzy/
-unzip ../../custom/themes/Nordic-master.zip -d /usr/share/themes/Nordic/
+sudo mkdir -p /usr/share/icons/Nordzy/ && sudo tar -xzf ../../custom/icons/Nordzy.tar.gz && sudo cp -r Nordzy/ /usr/share/icons/Nordzy/
+unzip ../../custom/themes/Nordic-master.zip
+sudo cp -r Nordic-master/ /usr/share/themes/Nordic/
+sudo rm -r Nordic-master/
 sudo chmod u+x ~/.config/bspwm/bspwmrc
 
 # A modifier plus tard
