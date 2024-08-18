@@ -21,7 +21,8 @@ mkdir -p ~/.config/{bspwm,sxhkd,polybar,compton}
 cp ../linux/dotfiles/bspwm/bspwmrc ~/.config/bspwm/
 cp ../linux/dotfiles/sxhkd/sxhkdrc ~/.config/sxhkd/
 cp ../linux/dotfiles/polybar/config.ini ~/.config/polybar/
-cp ../linux/dotfiles/compton.conf ~/.config/compton/compton.conf
+cp ../linux/dotfiles/compton/compton.conf ~/.config/compton/compton.conf
+cp ../linux/dotfiles/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini
 
 cp -r ../../custom/wallpapers/ ~/.config/wallpapers/
 sudo mkdir -p /usr/share/icons/Nordzy/ && sudo tar -xzf ../../custom/icons/Nordzy.tar.gz && sudo cp -r Nordzy/ /usr/share/icons/Nordzy/

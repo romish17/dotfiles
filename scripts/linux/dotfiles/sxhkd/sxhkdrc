@@ -10,7 +10,7 @@ super + e
     thunar
 
 super + r
-    rofi
+    rofi -show drun
 
 # program launcher
 super + @space

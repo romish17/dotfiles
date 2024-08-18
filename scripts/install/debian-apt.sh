@@ -10,9 +10,6 @@ debian_apps=(
    'xserver-xorg-core'     # Composant central du serveur X, responsable de la gestion de l'affichage.
    'x11-xserver-utils'      # Ensemble d'utilitaires pour la configuration et le contrôle du serveur X.
    'psmisc'                 # Collection d'outils système, dont 'killall' pour gérer les processus.
-   'openbox'                # Gestionnaire de fenêtres léger et configurable.
-   'lxterminal'             # Émulateur de terminal léger pour le bureau LXDE.
-   'lightdm'                # Gestionnaire de sessions graphique pour l'authentification et le démarrage des sessions X.
    'compton'                # Compositeur de fenêtres pour ajouter des effets comme la transparence et les ombres.
    'jgmenu'                 # Menu léger pour le clic droit, souvent utilisé avec Openbox.
 
@@ -121,7 +118,6 @@ debian_apps=(
    'zoxide'                 # Navigation auto-apprise.
 
    # Sécurité
-   'clamav'                 # Suite antivirus open source.
    'cryptsetup'             # Gestion des volumes cryptés.
    'gnupg'                  # Chiffrement PGP, signature et vérification.
    'git-crypt'              # Cryptage transparent pour les dépôts git.
