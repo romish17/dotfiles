@@ -116,6 +116,7 @@ debian_apps=(
    'trash-cli'              # Gestion des fichiers supprimés.
    'xsel'                   # Accès au presse-papiers X.
    'zoxide'                 # Navigation auto-apprise.
+   'net-tools'              # For ifconfig
 
    # Sécurité
    'cryptsetup'             # Gestion des volumes cryptés.
