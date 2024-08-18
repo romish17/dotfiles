@@ -36,7 +36,7 @@ function print_usage () {
 
 function install_debian () {
   echo -e "${LIGHTGREEN}Installing ${1} via apt-get${RESET}"
-  sudo apt install $1 -yy -qq > /dev/null 2>&1
+  apt install $1 -yy -qq > /dev/null 2>&1
 }
 function install_arch () {
   echo -e "${LIGHTGREEN}Installing ${1} via Pacman${RESET}"
