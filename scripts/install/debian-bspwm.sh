@@ -37,7 +37,7 @@ for app in ${debian_apps[@]}; do
       echo -e "${LIGHTGREEN}[Installing]${LIGHT} Downloading ${app}...${RESET}"
       sudo apt install ${app} --assume-yes 2> /dev/null
     fi
-
+done
 
 echo -e "${LIGHTGREEN}[Installing]${LIGHT} Copy theme files...${RESET}"
 
@@ -63,4 +63,4 @@ wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/do
 && cd ~/.local/share/fonts \
 && unzip JetBrainsMono.zip \
 && rm JetBrainsMono.zip \
-&& fc-cache -fv
+&& fc-cache -fv 2> /dev/null
