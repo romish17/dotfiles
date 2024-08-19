@@ -74,6 +74,14 @@ debian_apps=(
    'trash-cli'              # Gestion des fichiers supprimés, restauration et enregistrement.
    'xsel'                   # Accès au presse-papiers X.
    'zoxide'                 # Navigation auto-apprise (meilleur que cd).
+   'bluetooth'
+   'blueman'
+   'nm-tray'
+   'mkisofs'
+   'qemu-kvm'
+   'libvirt-daemon-system'
+   'libvirt-clients'
+   'bridge-utils'
 
    # Applications
    'rofi'                   # Lanceur d'applications et menu texte, très personnalisable.
