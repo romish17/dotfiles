@@ -34,6 +34,7 @@ debian_apps=(
    'rkhunter'               # Détection de rootkits et d'autres menaces.
    'fail2ban'               # 
    'ssh-audit'
+   'ufw'
 
    # Monitoring, gestion et statistiques
    'btop'                   # Surveillance des ressources système.
