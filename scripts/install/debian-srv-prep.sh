@@ -6,6 +6,8 @@ SSH_CONFIG="/etc/ssh/sshd_config"
 SSH_PORT=22  # Modifiez le port par défaut ici
 USERNAME=""  # Remplacez par le nom d'utilisateur non-root
 PUBLIC_KEY="ssh-rsa AAAA..."  # Remplacez par votre clé publique
+TRUSTED_PUBLIC_IP="X.X.X.X"
+
 # Chemin du fichier de configuration de Suricata
 SURICATA_CONF="/etc/suricata/suricata.yaml"
 # Interface réseau à utiliser
