@@ -6,6 +6,15 @@ SSH_CONFIG="/etc/ssh/sshd_config"
 SSH_PORT=22  # Modifiez le port par défaut ici
 USERNAME=""  # Remplacez par le nom d'utilisateur non-root
 PUBLIC_KEY="ssh-rsa AAAA..."  # Remplacez par votre clé publique
+# Chemin du fichier de configuration de Suricata
+SURICATA_CONF="/etc/suricata/suricata.yaml"
+# Interface réseau à utiliser
+INTERFACE="eth0"  # Remplace "eth0" par ton interface réseau réelle
+# Déclaration des fichiers de règles
+RULES_DIR="/etc/suricata/rules"
+RULE_HTTP_FILE="$RULES_DIR/http.rules"
+RULE_HTTPS_FILE="$RULES_DIR/https.rules"
+RULE_SSH_FILE="$RULES_DIR/ssh.rules"
 
 # Color variables
 LIGHTGREEN='\033[1;32m'
@@ -35,6 +44,7 @@ debian_apps=(
    'fail2ban'               # 
    'ssh-audit'
    'ufw'
+   'suricata'
 
    # Monitoring, gestion et statistiques
    'btop'                   # Surveillance des ressources système.
@@ -162,10 +172,11 @@ sudo systemctl start docker
 # Configuration du parefeu
 ##########################################
 
-command -v ufw &> /dev/null && echo "UFW est déjà installé." || { echo "UFW n'est pas installé. Installation de UFW..."; apt-get update && apt-get install ufw -y; }
 # Config du parefeu
-echo "Réinitialisation des règles UFW par défaut..."
+echo "Configuration du parefeu..."
 ufw reset
+ufw default deny incoming
+ufw default allow outgoing
 ufw allow $SSH_PORT/tcp
 ufw allow 80/tcp
 ufw allow 443/tcp
@@ -187,3 +198,79 @@ EOL'
 
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
+
+##########################################
+# Suricata
+##########################################
+
+# Vérification et configuration de l'interface réseau dans suricata.yaml
+if grep -q "interface: " "$SURICATA_CONF"; then
+    echo "Interface trouvée dans $SURICATA_CONF. Configuration en cours..."
+    sudo sed -i "s/interface: .*/interface: $INTERFACE/" "$SURICATA_CONF"
+else
+    echo "Ajout de l'interface $INTERFACE dans $SURICATA_CONF."
+    sudo sed -i "/af-packet:/a\  - interface: $INTERFACE" "$SURICATA_CONF"
+fi
+
+# Vérifie si la section rule-files existe déjà
+if grep -q "rule-files:" "$SURICATA_CONF"; then
+    echo "Section 'rule-files' trouvée dans $SURICATA_CONF."
+else
+    echo "Ajout de la section 'rule-files' dans $SURICATA_CONF."
+    echo -e "\nrule-files:" | sudo tee -a "$SURICATA_CONF"
+fi
+
+# Ajouter la règle HTTP si elle n'existe pas déjà
+if grep -q "$RULE_HTTP_FILE" "$SURICATA_CONF"; then
+    echo "La règle HTTP existe déjà dans $SURICATA_CONF."
+else
+    echo "Ajout de la règle HTTP dans $SURICATA_CONF."
+    sudo sed -i "/rule-files:/a\ - $RULE_HTTP_FILE" "$SURICATA_CONF"
+fi
+
+# Ajouter la règle HTTPS si elle n'existe pas déjà
+if grep -q "$RULE_HTTPS_FILE" "$SURICATA_CONF"; then
+    echo "La règle HTTPS existe déjà dans $SURICATA_CONF."
+else
+    echo "Ajout de la règle HTTPS dans $SURICATA_CONF."
+    sudo sed -i "/rule-files:/a\ - $RULE_HTTPS_FILE" "$SURICATA_CONF"
+fi
+
+# Ajouter la règle SSH si elle n'existe pas déjà
+if grep -q "$RULE_SSH_FILE" "$SURICATA_CONF"; then
+    echo "La règle SSH existe déjà dans $SURICATA_CONF."
+else
+    echo "Ajout de la règle SSH dans $SURICATA_CONF."
+    sudo sed -i "/rule-files:/a\ - $RULE_SSH_FILE" "$SURICATA_CONF"
+fi
+
+# Création des fichiers de règles avec des exemples de règles si nécessaire
+mkdir -p "$RULES_DIR"
+
+if [ ! -f "$RULE_HTTP_FILE" ]; then
+    echo "Création de $RULE_HTTP_FILE avec des règles par défaut."
+    sudo bash -c "cat > $RULE_HTTP_FILE <<EOL
+# Règles pour HTTP
+alert http any any -> any any (msg:\"HTTP traffic detected\"; sid:1000002; rev:1;)
+EOL"
+fi
+
+if [ ! -f "$RULE_HTTPS_FILE" ]; then
+    echo "Création de $RULE_HTTPS_FILE avec des règles par défaut."
+    sudo bash -c "cat > $RULE_HTTPS_FILE <<EOL
+# Règles pour HTTPS
+alert tls any any -> any 443 (msg:\"HTTPS traffic detected\"; sid:1000003; rev:1;)
+EOL"
+fi
+
+if [ ! -f "$RULE_SSH_FILE" ]; then
+    echo "Création de $RULE_SSH_FILE avec des règles par défaut."
+    sudo bash -c "cat > $RULE_SSH_FILE <<EOL
+# Règles pour SSH
+alert tcp any any -> any 22 (msg:\"SSH traffic detected\"; sid:1000001; rev:1;)
+EOL"
+fi
+
+# Redémarrage de Suricata pour appliquer les nouvelles règles
+echo "Redémarrage de Suricata pour appliquer les nouvelles règles..."
+sudo systemctl restart suricata
