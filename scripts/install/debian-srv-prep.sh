@@ -183,7 +183,7 @@ ufw allow $SSH_PORT/tcp
 ufw allow 80/tcp
 ufw allow 443/tcp
 ufw enable
-ufw status verbose
+ufw reload
 echo "Configuration UFW terminée."
 
 ##########################################
