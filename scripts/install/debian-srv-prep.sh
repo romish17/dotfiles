@@ -18,6 +18,10 @@ RULE_HTTP_FILE="$RULES_DIR/http.rules"
 RULE_HTTPS_FILE="$RULES_DIR/https.rules"
 RULE_SSH_FILE="$RULES_DIR/ssh.rules"
 
+# Chemin vers le fichier de configuration de rkhunter
+RKHUNTER_CONF="/etc/rkhunter.conf"
+RKHUNTER_DEFAULT="/etc/default/rkhunter"
+
 # Color variables
 LIGHTGREEN='\033[1;32m'
 YELLOW='\033[0;93m'
@@ -276,3 +280,46 @@ fi
 # Redémarrage de Suricata pour appliquer les nouvelles règles
 echo "Redémarrage de Suricata pour appliquer les nouvelles règles..."
 sudo systemctl restart suricata
+
+# ====================================================
+# Rkhunter
+# ====================================================
+
+sed -i 's/#\?MAIL-ON-WARNING=.*/#MAIL-ON-WARNING=root@localhost/' $RKHUNTER_CONF
+sed -i 's/#\?MAIL_CMD=.*"/MAIL_CMD=mail -s "[rkhunter] Warnings found for \${HOST_NAME}"/' $RKHUNTER_CONF
+
+sed -i 's/#\?WEB_CMD=.*/WEB_CMD=wget/' $RKHUNTER_CONF
+sed -i 's/DB_UPDATE_EMAIL=".*"/DB_UPDATE_EMAIL="true"/' $RKHUNTER_CONF
+sed -i 's/#\?UPDATE_MIRRORS=.*/UPDATE_MIRRORS=1/' $RKHUNTER_CONF
+sed -i 's/#\?MIRRORS_MODE=.*/MIRRORS_MODE=0/' $RKHUNTER_CONF
+
+echo 'ALLOWPROCDELFILE=/usr/sbin/cron' >> $RKHUNTER_CONF
+echo 'ALLOWPROCDELFILE=/usr/bin/dash' >> $RKHUNTER_CONF
+echo 'ALLOWPROCDELFILE=/usr/bin/run-parts' >> $RKHUNTER_CONF
+echo 'SCRIPTWHITELIST=/usr/bin/egrep' >> $RKHUNTER_CONF
+echo 'SCRIPTWHITELIST=/usr/bin/fgrep' >> $RKHUNTER_CONF
+echo 'SCRIPTWHITELIST=/usr/bin/which' >> $RKHUNTER_CONF
+echo 'PORT_PATH_WHITELIST=/usr/sbin/portsentry' >> $RKHUNTER_CONF
+echo 'ALLOW_SSH_ROOT_USER=prohibit-password' >> $RKHUNTER_CONF
+
+sed -i 's~#\?ALLOWPROCLISTEN=/sbin/dhclient~ALLOWPROCLISTEN=/sbin/dhclient~' $RKHUNTER_CONF
+sed -i 's/^DISABLE_TESTS/#&/' $RKHUNTER_CONF
+sed -i 's/^#\?PKGMGR=.*/PKGMGR=DPKG/' $RKHUNTER_CONF
+sed -i 's/^#\?\(ALLOW_SSH_PROT_V1\)=.*/\1=0/' $RKHUNTER_CONF
+
+sudo bash -c "cat > $RKHUNTER_DEFAULT << EOF
+#Perform security check daily
+CRON_DAILY_RUN="true"
+#Enable weekly database updates.
+CRON_DB_UPDATE="true"
+#Enable automatic database updates
+APT_AUTOGEN="true"
+EOF"
+
+sudo chmod +x $RKHUNTER_DEFAULT
+
+# 
+rkhunter --update
+rkhunter --propupd
+rkhunter -c --enable all --disable none --skip-keypress
+#rkhunter --checkall
