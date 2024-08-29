@@ -53,16 +53,50 @@ debian_apps=(
 
 # Demander le nom d'utilisateur
 read -p "Entrez le nom de l'utilisateur non-root pour la connexion SSH : " USERNAME
-# Vérifier si l'utilisateur existe
-id "$USERNAME" &>/dev/null && echo "L'utilisateur $USERNAME existe." || { echo "Erreur : L'utilisateur $USERNAME n'existe pas. Veuillez créer cet utilisateur avant d'exécuter ce script."; exit 1; }
-# Vérifier si l'utilisateur est dans le groupe sudo
-groups "$USERNAME" | grep &>/dev/null '\bsudo\b' && echo "L'utilisateur $USERNAME est dans le groupe sudo." || { echo "Erreur : L'utilisateur $USERNAME n'est pas dans le groupe sudo. Ajoutez cet utilisateur au groupe sudo avant de continuer."; exit 1; }
+# Vérification si l'utilisateur existe
 
+# Vérification de la présence de sudo
+if ! command -v sudo &>/dev/null; then
+    echo "sudo n'est pas installé. Installation en cours..."
+    apt update -qq && apt install -yqq sudo > /dev/null 2>&1
+    echo "sudo a été installé."
+else
+    echo "sudo est déjà installé."
+fi
+
+if id "$USERNAME" &>/dev/null; then
+    echo "L'utilisateur $USERNAME existe déjà."
+else
+    echo "L'utilisateur $USERNAME n'existe pas. Création en cours..."
+    
+    # Demande de mot de passe pour l'utilisateur
+    sudo adduser $USERNAME
+    echo "L'utilisateur $USERNAME a été créé."
+fi
+
+# Vérification si l'utilisateur est dans le groupe sudo
+if groups $USERNAME | grep &>/dev/null "\bsudo\b"; then
+    echo "L'utilisateur $USERNAME est déjà dans le groupe sudo."
+else
+    echo "Ajout de $USERNAME au groupe sudo..."
+    sudo usermod -aG sudo $USERNAME
+    echo "$USERNAME a été ajouté au groupe sudo."
+fi
+
+# Configuration de sudo pour ne pas demander le mot de passe
+SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
+if [ ! -f "$SUDOERS_FILE" ]; then
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" | sudo tee $SUDOERS_FILE > /dev/null
+    echo "Configuration de sudo mise à jour pour $USERNAME (pas de mot de passe requis)."
+else
+    echo "La configuration sudo pour $USERNAME existe déjà."
+fi
 # Docker repos
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-apt update && apt upgrade -yy
+echo "Mise à jour des paquets"
+apt upgrade -yqq > /dev/null 2>&1
 
 # Install path
 mkdir -p /srv/$SRV_PATH
@@ -75,7 +109,7 @@ for app in ${debian_apps[@]}; do
       echo -e "${YELLOW}[Skipping]${LIGHT} ${app} is already installed via Flatpak${RESET}"
     else
       echo -e "${LIGHTGREEN}[Installing]${LIGHT} Downloading ${app}...${RESET}"
-      sudo apt install ${app} --assume-yes
+      sudo apt install ${app} --assume-yes -qq > /dev/null 2>&1
     fi
 done
 
