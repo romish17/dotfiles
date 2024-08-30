@@ -38,7 +38,6 @@ debian_apps=(
    'apt-transport-https'
    'ca-certificates'
    'curl'
-   'gnupg'
    'lsb-release'
 
    # Sécurité
@@ -55,8 +54,6 @@ debian_apps=(
    # Monitoring, gestion et statistiques
    'btop'                   # Surveillance des ressources système.
    'bmon'                   # Moniteur d'utilisation de bande passante.
-   'ctop'                   # Surveillance des conteneurs.
-   'gping'                  # Outil interactif de ping avec graphique.
    'glances'                # Moniteur de ressources avec interface web et API.
    'goaccess'               # Analyseur et visualiseur de logs web.
    'speedtest-cli'          # Outil de test de vitesse de connexion en ligne de commande.
@@ -123,7 +120,7 @@ mkdir -p /srv/$SRV_PATH
 
 # Install apps
 for app in ${debian_apps[@]}; do
-    if hash "${app}" 2> /dev/null; then
+    if dpkg -l $app &>/dev/null; then
       echo -e "${YELLOW}[Skipping]${LIGHT} ${app} is already installed${RESET}"
     elif hash flatpak 2> /dev/null && [[ ! -z $(echo $(flatpak list --columns=ref | grep $app)) ]]; then
       echo -e "${YELLOW}[Skipping]${LIGHT} ${app} is already installed via Flatpak${RESET}"
