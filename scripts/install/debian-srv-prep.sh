@@ -22,6 +22,10 @@ RULE_SSH_FILE="$RULES_DIR/ssh.rules"
 RKHUNTER_CONF="/etc/rkhunter.conf"
 RKHUNTER_DEFAULT="/etc/default/rkhunter"
 
+# Wazuh 
+WAZUH_MANAGER_IP="IP_DU_MANAGER_WAZUH"
+AGENT_NAME="NOM_DE_L_AGENT"
+
 # Color variables
 LIGHTGREEN='\033[1;32m'
 YELLOW='\033[0;93m'
@@ -110,6 +114,11 @@ fi
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 # Ajouter le dépôt Docker à la liste des sources apt
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Wazuh repos
+echo "Ajout du dépôt Wazuh..."
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo apt-key add -
+echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
 
 echo "Mise à jour des paquets"
 apt update -qq > /dev/null 2>&1
@@ -277,6 +286,29 @@ fi
 # Redémarrage de Suricata pour appliquer les nouvelles règles
 echo "Redémarrage de Suricata pour appliquer les nouvelles règles..."
 sudo systemctl restart suricata
+
+# ====================================================
+# Wazuh
+# ====================================================
+
+# Installation de l'agent Wazuh
+echo "Installation de l'agent Wazuh..."
+sudo apt-get install -y wazuh-agent
+
+# Configuration de l'agent
+echo "Configuration de l'agent Wazuh..."
+sudo sed -i "s/MANAGER_IP/$WAZUH_MANAGER_IP/" /var/ossec/etc/ossec.conf
+sudo sed -i "s/AGENT_NAME/$AGENT_NAME/" /var/ossec/etc/ossec.conf
+
+# Enregistrement de l'agent
+echo "Enregistrement de l'agent..."
+sudo systemctl daemon-reload
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent
+
+# Confirmation de l'installation
+echo "Vérification de l'installation..."
+sudo systemctl status wazuh-agent
 
 # ====================================================
 # Rkhunter
